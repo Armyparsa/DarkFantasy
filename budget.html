@@ -1,231 +1,373 @@
 <!doctype html>
 <html lang="fa" data-theme="leyndell">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Leyndell — Budget</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .hero-bg { background-image: url('https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1920'); }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leyndell — Budget</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .hero-bg {
+        background-image: url("https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1920");
+      }
 
-    .balance-bar {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    .balance-item {
-      background: var(--bg-deep); border: 1px solid var(--border);
-      padding: 1rem; text-align: center;
-    }
-    .balance-label {
-      font-family: var(--font-title); font-size: 0.62rem; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--ash); margin-bottom: 0.4rem; display: block;
-    }
-    .balance-value {
-      font-family: var(--font-display); font-size: 1.4rem; color: var(--gold);
-    }
-    .balance-value.positive { color: #7aaa7a; }
-    .balance-value.negative { color: var(--ember-bright); }
+      .balance-bar {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .balance-item {
+        background: var(--bg-deep);
+        border: 1px solid var(--border);
+        padding: 1rem;
+        text-align: center;
+      }
+      .balance-label {
+        font-family: var(--font-title);
+        font-size: 0.62rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--ash);
+        margin-bottom: 0.4rem;
+        display: block;
+      }
+      .balance-value {
+        font-family: var(--font-display);
+        font-size: 1.4rem;
+        color: var(--gold);
+      }
+      .balance-value.positive {
+        color: #7aaa7a;
+      }
+      .balance-value.negative {
+        color: var(--ember-bright);
+      }
 
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
-      z-index: 500; align-items: center; justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--bg-card); border: 1px solid var(--border);
-      padding: 2rem; width: 100%; max-width: 440px; margin: 1rem;
-    }
-    .modal h3 {
-      font-family: var(--font-title); font-size: 0.8rem; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
-    }
-    .form-group { margin-bottom: 1rem; }
-    .form-group label {
-      display: block; font-family: var(--font-title); font-size: 0.65rem;
-      letter-spacing: 2px; text-transform: uppercase; color: var(--ash); margin-bottom: 0.4rem;
-    }
-    .form-group input, .form-group select {
-      width: 100%; background: var(--bg-deep); border: 1px solid var(--border);
-      color: var(--light); font-family: var(--font-body); font-size: 0.95rem;
-      padding: 0.65rem 0.9rem; outline: none; transition: border-color 0.3s;
-    }
-    .form-group input:focus, .form-group select:focus { border-color: var(--gold-dim); }
-    .form-group select option { background: var(--bg-card); }
-    .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
-    .btn-cancel { border-color: var(--mist); color: var(--ash); }
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(6px);
+        z-index: 500;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.open {
+        display: flex;
+      }
+      .modal {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        padding: 2rem;
+        width: 100%;
+        max-width: 440px;
+        margin: 1rem;
+      }
+      .modal h3 {
+        font-family: var(--font-title);
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 1.5rem;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      .form-group label {
+        display: block;
+        font-family: var(--font-title);
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--ash);
+        margin-bottom: 0.4rem;
+      }
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        background: var(--bg-deep);
+        border: 1px solid var(--border);
+        color: var(--light);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        padding: 0.65rem 0.9rem;
+        outline: none;
+        transition: border-color 0.3s;
+      }
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: var(--gold-dim);
+      }
+      .form-group select option {
+        background: var(--bg-card);
+      }
+      .modal-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+      .btn-cancel {
+        border-color: var(--mist);
+        color: var(--ash);
+      }
 
-    .income-dot { color: #7aaa7a; }
-    .expense-dot { color: var(--ember-bright); }
-    .action-btn {
-      background: none; border: none; cursor: pointer; padding: 0.25rem 0.5rem;
-      font-size: 0.8rem; transition: color 0.2s; color: var(--ash);
-    }
-    .action-btn:hover { color: var(--ember-bright); }
-  </style>
-</head>
-<body>
-<canvas id="particles-canvas"></canvas>
+      .income-dot {
+        color: #7aaa7a;
+      }
+      .expense-dot {
+        color: var(--ember-bright);
+      }
+      .action-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        transition: color 0.2s;
+        color: var(--ash);
+      }
+      .action-btn:hover {
+        color: var(--ember-bright);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="particles-canvas"></canvas>
 
-<header class="header">
-  <div class="header-content">
-    <a href="index.html" class="logo">
-      <div class="logo-icon"><i class="fas fa-crown"></i></div>
-      Leyndell
-    </a>
-    <nav class="navbar">
-      <a href="index.html"><i class="fas fa-home"></i> Home</a>
-      <a href="todo.html"><i class="fas fa-list-check"></i> Todo</a>
-      <a href="habits.html"><i class="fas fa-fire"></i> Habits</a>
-      <a href="budget.html" class="active"><i class="fas fa-coins"></i> Budget</a>
-      <a href="diary.html"><i class="fas fa-scroll"></i> Diary</a>
-      <a href="books.html"><i class="fas fa-book"></i> Books</a>
-      <a href="developer.html"><i class="fas fa-code"></i> Dev</a>
-    </nav>
-    <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
-  </div>
-</header>
+    <header class="header">
+      <div class="header-content">
+        <a href="index.html" class="logo">
+          <div class="logo-icon"><i class="fas fa-crown"></i></div>
+          Leyndell
+        </a>
+        <nav class="navbar">
+          <a href="index.html"><i class="fas fa-home"></i> Home</a>
+          <a href="todo.html"><i class="fas fa-list-check"></i> Todo</a>
+          <a href="habits.html"><i class="fas fa-fire"></i> Habits</a>
+          <a href="budget.html" class="active"
+            ><i class="fas fa-coins"></i> Budget</a
+          >
+          <a href="diary.html"><i class="fas fa-scroll"></i> Diary</a>
+          <a href="books.html"><i class="fas fa-book"></i> Books</a>
+          <a href="developer.html"><i class="fas fa-code"></i> Dev</a>
+        </nav>
+        <div class="hamburger" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </header>
 
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Leyndell</div>
-    <h1>Golden Ledger</h1>
-    <p>Manage your golden runes wisely, Tarnished...</p>
-  </div>
-</section>
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Leyndell</div>
+        <h1>Golden Ledger</h1>
+        <p>Manage your golden runes wisely, Tarnished...</p>
+      </div>
+    </section>
 
-<section class="section" style="max-width:860px">
-  <div class="section-title">Rune Treasury</div>
-  <div class="balance-bar">
-    <div class="balance-item">
-      <span class="balance-label">Income</span>
-      <div class="balance-value positive" id="totalIncome">$0</div>
+    <section class="section" style="max-width: 860px">
+      <div class="section-title">Rune Treasury</div>
+      <div class="balance-bar">
+        <div class="balance-item">
+          <span class="balance-label">Income</span>
+          <div class="balance-value positive" id="totalIncome">$0</div>
+        </div>
+        <div class="balance-item">
+          <span class="balance-label">Balance</span>
+          <div class="balance-value" id="totalBalance">$0</div>
+        </div>
+        <div class="balance-item">
+          <span class="balance-label">Expenses</span>
+          <div class="balance-value negative" id="totalExpense">$0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon"><i class="fas fa-coins"></i></div>
+          <h2>Transactions</h2>
+        </div>
+        <div class="card-body" id="budgetList">
+          <p class="empty">No runes counted yet...</p>
+        </div>
+        <div style="padding: 0 1.5rem 1.5rem">
+          <button class="btn" onclick="openModal()" style="width: 100%">
+            <i class="fas fa-plus"></i> <span>Record Rune</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div
+        class="footer-bottom"
+        style="max-width: 860px; border: none; padding-top: 0"
+      >
+        <p>Leyndell &copy; 2025 — Dark Chronicle</p>
+        <p>
+          <a href="index.html" style="color: var(--ash); text-decoration: none"
+            >Back to Chronicle</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <div class="modal-overlay" id="budgetModal">
+      <div class="modal">
+        <h3>Record Transaction</h3>
+        <div class="form-group">
+          <label>Title</label>
+          <input
+            type="text"
+            id="transTitle"
+            placeholder="Transaction name..."
+          />
+        </div>
+        <div class="form-group">
+          <label>Amount</label>
+          <input
+            type="number"
+            id="transAmount"
+            placeholder="0"
+            min="0"
+            step="0.01"
+          />
+        </div>
+        <div class="form-group">
+          <label>Type</label>
+          <select id="transType">
+            <option value="income">Income</option>
+            <option value="expense" selected>Expense</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <input
+            type="text"
+            id="transCategory"
+            placeholder="Food, Transport, etc..."
+          />
+        </div>
+        <div class="modal-actions">
+          <button class="btn" onclick="submitTransaction()">
+            <span>Record</span>
+          </button>
+          <button class="btn btn-cancel" onclick="closeModal()">
+            <span>Cancel</span>
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="balance-item">
-      <span class="balance-label">Balance</span>
-      <div class="balance-value" id="totalBalance">$0</div>
-    </div>
-    <div class="balance-item">
-      <span class="balance-label">Expenses</span>
-      <div class="balance-value negative" id="totalExpense">$0</div>
-    </div>
-  </div>
 
-  <div class="card">
-    <div class="card-header">
-      <div class="card-header-icon"><i class="fas fa-coins"></i></div>
-      <h2>Transactions</h2>
-    </div>
-    <div class="card-body" id="budgetList">
-      <p class="empty">No runes counted yet...</p>
-    </div>
-    <div style="padding: 0 1.5rem 1.5rem">
-      <button class="btn" onclick="openModal()" style="width:100%">
-        <i class="fas fa-plus"></i> <span>Record Rune</span>
-      </button>
-    </div>
-  </div>
-</section>
+    <script src="js/budget.js"></script>
+    <script src="js/shared.js"></script>
+    <script>
+      loadTransactions();
 
-<footer class="footer">
-  <div class="footer-bottom" style="max-width:860px; border:none; padding-top:0">
-    <p>Leyndell &copy; 2025 — Dark Chronicle</p>
-    <p><a href="index.html" style="color:var(--ash); text-decoration:none">Back to Chronicle</a></p>
-  </div>
-</footer>
+      function openModal() {
+        document.getElementById("budgetModal").classList.add("open");
+        setTimeout(() => document.getElementById("transTitle").focus(), 100);
+      }
+      function closeModal() {
+        document.getElementById("budgetModal").classList.remove("open");
+        document.getElementById("transTitle").value = "";
+        document.getElementById("transAmount").value = "";
+        document.getElementById("transCategory").value = "";
+      }
+      function submitTransaction() {
+        const title = document.getElementById("transTitle").value.trim();
+        const amount = parseFloat(document.getElementById("transAmount").value);
+        if (!title || isNaN(amount)) return;
+        const type = document.getElementById("transType").value;
+        const cat =
+          document.getElementById("transCategory").value.trim() || "Other";
+        addTransaction(
+          title,
+          amount,
+          type,
+          cat,
+          new Date().toISOString().split("T")[0],
+        );
+        transaction = JSON.parse(
+          localStorage.getItem("dc_transactions") || "[]",
+        );
+        closeModal();
+        render();
+      }
 
-<div class="modal-overlay" id="budgetModal">
-  <div class="modal">
-    <h3>Record Transaction</h3>
-    <div class="form-group">
-      <label>Title</label>
-      <input type="text" id="transTitle" placeholder="Transaction name..." />
-    </div>
-    <div class="form-group">
-      <label>Amount</label>
-      <input type="number" id="transAmount" placeholder="0" min="0" step="0.01" />
-    </div>
-    <div class="form-group">
-      <label>Type</label>
-      <select id="transType">
-        <option value="income">Income</option>
-        <option value="expense" selected>Expense</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Category</label>
-      <input type="text" id="transCategory" placeholder="Food, Transport, etc..." />
-    </div>
-    <div class="modal-actions">
-      <button class="btn" onclick="submitTransaction()"><span>Record</span></button>
-      <button class="btn btn-cancel" onclick="closeModal()"><span>Cancel</span></button>
-    </div>
-  </div>
-</div>
+      function render() {
+        const c = document.getElementById("budgetList");
+        transaction = JSON.parse(
+          localStorage.getItem("dc_transactions") || "[]",
+        );
 
-<script src="js/budget.js"></script>
-<script src="js/shared.js"></script>
-<script>
-  loadTransactions();
+        const income = transaction
+          .filter((t) => t.type === "income")
+          .reduce((s, t) => s + t.amount, 0);
+        const expense = transaction
+          .filter((t) => t.type === "expense")
+          .reduce((s, t) => s + t.amount, 0);
+        const balance = income - expense;
 
-  function openModal() {
-    document.getElementById('budgetModal').classList.add('open');
-    setTimeout(() => document.getElementById('transTitle').focus(), 100);
-  }
-  function closeModal() {
-    document.getElementById('budgetModal').classList.remove('open');
-    document.getElementById('transTitle').value = '';
-    document.getElementById('transAmount').value = '';
-    document.getElementById('transCategory').value = '';
-  }
-  function submitTransaction() {
-    const title = document.getElementById('transTitle').value.trim();
-    const amount = parseFloat(document.getElementById('transAmount').value);
-    if (!title || isNaN(amount)) return;
-    const type = document.getElementById('transType').value;
-    const cat = document.getElementById('transCategory').value.trim() || 'Other';
-    addTransaction(title, amount, type, cat, new Date().toISOString().split('T')[0]);
-    transaction = JSON.parse(localStorage.getItem('dc_transactions') || '[]');
-    closeModal(); render();
-  }
+        document.getElementById("totalIncome").textContent =
+          "$" + income.toFixed(2);
+        document.getElementById("totalExpense").textContent =
+          "$" + expense.toFixed(2);
+        const balEl = document.getElementById("totalBalance");
+        balEl.textContent =
+          (balance >= 0 ? "+$" : "-$") + Math.abs(balance).toFixed(2);
+        balEl.className =
+          "balance-value " + (balance >= 0 ? "positive" : "negative");
 
-  function render() {
-    const c = document.getElementById('budgetList');
-    transaction = JSON.parse(localStorage.getItem('dc_transactions') || '[]');
-
-    const income = transaction.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
-    const expense = transaction.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
-    const balance = income - expense;
-
-    document.getElementById('totalIncome').textContent = '$' + income.toFixed(2);
-    document.getElementById('totalExpense').textContent = '$' + expense.toFixed(2);
-    const balEl = document.getElementById('totalBalance');
-    balEl.textContent = (balance >= 0 ? '+$' : '-$') + Math.abs(balance).toFixed(2);
-    balEl.className = 'balance-value ' + (balance >= 0 ? 'positive' : 'negative');
-
-    if (!transaction.length) { c.innerHTML = '<p class="empty">No runes counted yet...</p>'; return; }
-    c.innerHTML = [...transaction].reverse().map(t => `
+        if (!transaction.length) {
+          c.innerHTML = '<p class="empty">No runes counted yet...</p>';
+          return;
+        }
+        c.innerHTML = [...transaction]
+          .reverse()
+          .map(
+            (t) => `
       <div class="list-item">
-        <span class="${t.type === 'income' ? 'income-dot' : 'expense-dot'}">
+        <span class="${t.type === "income" ? "income-dot" : "expense-dot"}">
           <i class="fas fa-circle" style="font-size:0.5rem;margin-right:0.5rem"></i>
         </span>
         <span class="title">${t.title} <small style="color:var(--ash);font-size:0.8rem">(${t.category})</small></span>
         <div style="display:flex;align-items:center;gap:0.75rem">
-          <span class="status" style="color:${t.type === 'income' ? '#7aaa7a' : 'var(--ember-bright)'}">
-            ${t.type === 'income' ? '+' : '-'}$${parseFloat(t.amount).toFixed(2)}
+          <span class="status" style="color:${t.type === "income" ? "#7aaa7a" : "var(--ember-bright)"}">
+            ${t.type === "income" ? "+" : "-"}$${parseFloat(t.amount).toFixed(2)}
           </span>
           <button class="action-btn" onclick="remove(${t.id})"><i class="fas fa-trash"></i></button>
         </div>
-      </div>`).join('');
-  }
+      </div>`,
+          )
+          .join("");
+      }
 
-  function remove(id) { deleteTransaction(id); transaction = JSON.parse(localStorage.getItem('dc_transactions') || '[]'); render(); }
+      function remove(id) {
+        deleteTransaction(id);
+        transaction = JSON.parse(
+          localStorage.getItem("dc_transactions") || "[]",
+        );
+        render();
+      }
 
-  document.addEventListener('DOMContentLoaded', render);
-  document.getElementById('budgetModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
-</script>
-</body>
+      document.addEventListener("DOMContentLoaded", render);
+      document
+        .getElementById("budgetModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeModal();
+        });
+      window.toggeleMenu = function () {
+        document.querySelector(".navbar").classList.toggle("opne");
+      };
+    </script>
+  </body>
 </html>

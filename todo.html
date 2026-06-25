@@ -1,193 +1,299 @@
 <!doctype html>
 <html lang="fa" data-theme="forest">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Limgrave — Todo</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .hero-bg { background-image: url('https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&w=1920'); }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Limgrave — Todo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .hero-bg {
+        background-image: url("https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&w=1920");
+      }
 
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
-      z-index: 500; align-items: center; justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--bg-card); border: 1px solid var(--border);
-      padding: 2rem; width: 100%; max-width: 440px; margin: 1rem;
-    }
-    .modal h3 {
-      font-family: var(--font-title); font-size: 0.8rem; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
-    }
-    .form-group { margin-bottom: 1rem; }
-    .form-group label {
-      display: block; font-family: var(--font-title); font-size: 0.65rem;
-      letter-spacing: 2px; text-transform: uppercase; color: var(--ash); margin-bottom: 0.4rem;
-    }
-    .form-group input, .form-group select {
-      width: 100%; background: var(--bg-deep); border: 1px solid var(--border);
-      color: var(--light); font-family: var(--font-body); font-size: 0.95rem;
-      padding: 0.65rem 0.9rem; outline: none; transition: border-color 0.3s;
-    }
-    .form-group input:focus, .form-group select:focus { border-color: var(--gold-dim); }
-    .form-group select option { background: var(--bg-card); }
-    .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
-    .btn-cancel { border-color: var(--mist); color: var(--ash); }
-    .btn-cancel:hover { border-color: var(--ember); color: var(--ember-bright); }
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(6px);
+        z-index: 500;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.open {
+        display: flex;
+      }
+      .modal {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        padding: 2rem;
+        width: 100%;
+        max-width: 440px;
+        margin: 1rem;
+      }
+      .modal h3 {
+        font-family: var(--font-title);
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 1.5rem;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      .form-group label {
+        display: block;
+        font-family: var(--font-title);
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--ash);
+        margin-bottom: 0.4rem;
+      }
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        background: var(--bg-deep);
+        border: 1px solid var(--border);
+        color: var(--light);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        padding: 0.65rem 0.9rem;
+        outline: none;
+        transition: border-color 0.3s;
+      }
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: var(--gold-dim);
+      }
+      .form-group select option {
+        background: var(--bg-card);
+      }
+      .modal-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+      .btn-cancel {
+        border-color: var(--mist);
+        color: var(--ash);
+      }
+      .btn-cancel:hover {
+        border-color: var(--ember);
+        color: var(--ember-bright);
+      }
 
-    .priority-high { color: var(--ember-bright); }
-    .priority-medium { color: #c9a84c; }
-    .priority-low { color: var(--ash); }
+      .priority-high {
+        color: var(--ember-bright);
+      }
+      .priority-medium {
+        color: #c9a84c;
+      }
+      .priority-low {
+        color: var(--ash);
+      }
 
-    .todo-actions { display: flex; gap: 0.5rem; }
-    .action-btn {
-      background: none; border: none; cursor: pointer; padding: 0.25rem 0.5rem;
-      font-size: 0.8rem; transition: color 0.2s; color: var(--ash);
-    }
-    .action-btn:hover { color: var(--gold); }
-    .action-btn.delete:hover { color: var(--ember-bright); }
-    .completed .title { text-decoration: line-through; color: var(--ash); }
-  </style>
-</head>
-<body>
-<canvas id="particles-canvas"></canvas>
+      .todo-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .action-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        transition: color 0.2s;
+        color: var(--ash);
+      }
+      .action-btn:hover {
+        color: var(--gold);
+      }
+      .action-btn.delete:hover {
+        color: var(--ember-bright);
+      }
+      .completed .title {
+        text-decoration: line-through;
+        color: var(--ash);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="particles-canvas"></canvas>
 
-<header class="header">
-  <div class="header-content">
-    <a href="index.html" class="logo">
-      <div class="logo-icon"><i class="fas fa-tree"></i></div>
-      Limgrave
-    </a>
-    <nav class="navbar">
-      <a href="index.html"><i class="fas fa-home"></i> Home</a>
-      <a href="todo.html" class="active"><i class="fas fa-list-check"></i> Todo</a>
-      <a href="habits.html"><i class="fas fa-fire"></i> Habits</a>
-      <a href="budget.html"><i class="fas fa-coins"></i> Budget</a>
-      <a href="diary.html"><i class="fas fa-scroll"></i> Diary</a>
-      <a href="books.html"><i class="fas fa-book"></i> Books</a>
-      <a href="developer.html"><i class="fas fa-code"></i> Dev</a>
-    </nav>
-    <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
-  </div>
-</header>
+    <header class="header">
+      <div class="header-content">
+        <a href="index.html" class="logo">
+          <div class="logo-icon"><i class="fas fa-tree"></i></div>
+          Limgrave
+        </a>
+        <nav class="navbar">
+          <a href="index.html"><i class="fas fa-home"></i> Home</a>
+          <a href="todo.html" class="active"
+            ><i class="fas fa-list-check"></i> Todo</a
+          >
+          <a href="habits.html"><i class="fas fa-fire"></i> Habits</a>
+          <a href="budget.html"><i class="fas fa-coins"></i> Budget</a>
+          <a href="diary.html"><i class="fas fa-scroll"></i> Diary</a>
+          <a href="books.html"><i class="fas fa-book"></i> Books</a>
+          <a href="developer.html"><i class="fas fa-code"></i> Dev</a>
+        </nav>
+        <div class="hamburger" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </header>
 
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Limgrave</div>
-    <h1>Quest Board</h1>
-    <p>Your first steps in the lands of duty...</p>
-  </div>
-</section>
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Limgrave</div>
+        <h1>Quest Board</h1>
+        <p>Your first steps in the lands of duty...</p>
+      </div>
+    </section>
 
-<section class="section" style="max-width:860px">
-  <div class="section-title">Active Quests</div>
-  <div class="card">
-    <div class="card-header">
-      <div class="card-header-icon"><i class="fas fa-list-check"></i></div>
-      <h2>Your Quests</h2>
+    <section class="section" style="max-width: 860px">
+      <div class="section-title">Active Quests</div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon"><i class="fas fa-list-check"></i></div>
+          <h2>Your Quests</h2>
+        </div>
+        <div class="card-body" id="todoList">
+          <p class="empty">No quests yet, brave Tarnished...</p>
+        </div>
+        <div style="padding: 0 1.5rem 1.5rem">
+          <button class="btn" onclick="openModal()" style="width: 100%">
+            <i class="fas fa-plus"></i> <span>New Quest</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div
+        class="footer-bottom"
+        style="max-width: 860px; border: none; padding-top: 0"
+      >
+        <p>Limgrave &copy; 2025 — Dark Chronicle</p>
+        <p>
+          <a href="index.html" style="color: var(--ash); text-decoration: none"
+            >Back to Chronicle</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="todoModal">
+      <div class="modal">
+        <h3>New Quest</h3>
+        <div class="form-group">
+          <label>Quest Title</label>
+          <input type="text" id="todoTitle" placeholder="Enter quest name..." />
+        </div>
+        <div class="form-group">
+          <label>Priority</label>
+          <select id="todoPriority">
+            <option value="high">High</option>
+            <option value="medium" selected>Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" id="todoDue" />
+        </div>
+        <div class="modal-actions">
+          <button class="btn" onclick="submitTodo()">
+            <span>Add Quest</span>
+          </button>
+          <button class="btn btn-cancel" onclick="closeModal()">
+            <span>Cancel</span>
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="card-body" id="todoList">
-      <p class="empty">No quests yet, brave Tarnished...</p>
-    </div>
-    <div style="padding: 0 1.5rem 1.5rem">
-      <button class="btn" onclick="openModal()" style="width:100%">
-        <i class="fas fa-plus"></i> <span>New Quest</span>
-      </button>
-    </div>
-  </div>
-</section>
 
-<footer class="footer">
-  <div class="footer-bottom" style="max-width:860px; border:none; padding-top:0">
-    <p>Limgrave &copy; 2025 — Dark Chronicle</p>
-    <p><a href="index.html" style="color:var(--ash); text-decoration:none">Back to Chronicle</a></p>
-  </div>
-</footer>
+    <script src="js/todo.js"></script>
+    <script src="js/shared.js"></script>
+    <script>
+      loadTodos();
 
-<!-- MODAL -->
-<div class="modal-overlay" id="todoModal">
-  <div class="modal">
-    <h3>New Quest</h3>
-    <div class="form-group">
-      <label>Quest Title</label>
-      <input type="text" id="todoTitle" placeholder="Enter quest name..." />
-    </div>
-    <div class="form-group">
-      <label>Priority</label>
-      <select id="todoPriority">
-        <option value="high">High</option>
-        <option value="medium" selected>Medium</option>
-        <option value="low">Low</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Due Date</label>
-      <input type="date" id="todoDue" />
-    </div>
-    <div class="modal-actions">
-      <button class="btn" onclick="submitTodo()"><span>Add Quest</span></button>
-      <button class="btn btn-cancel" onclick="closeModal()"><span>Cancel</span></button>
-    </div>
-  </div>
-</div>
+      function openModal() {
+        document.getElementById("todoModal").classList.add("open");
+        document.getElementById("todoDue").value = new Date()
+          .toISOString()
+          .split("T")[0];
+        setTimeout(() => document.getElementById("todoTitle").focus(), 100);
+      }
 
-<script src="js/todo.js"></script>
-<script src="js/shared.js"></script>
-<script>
-  loadTodos();
+      function closeModal() {
+        document.getElementById("todoModal").classList.remove("open");
+        document.getElementById("todoTitle").value = "";
+      }
 
-  function openModal() {
-    document.getElementById('todoModal').classList.add('open');
-    document.getElementById('todoDue').value = new Date().toISOString().split('T')[0];
-    setTimeout(() => document.getElementById('todoTitle').focus(), 100);
-  }
+      function submitTodo() {
+        const title = document.getElementById("todoTitle").value.trim();
+        if (!title) return;
+        const priority = document.getElementById("todoPriority").value;
+        const due = document.getElementById("todoDue").value;
+        addTodo(title, priority, due);
+        todos = JSON.parse(localStorage.getItem("dc_todos") || "[]");
+        closeModal();
+        render();
+      }
 
-  function closeModal() {
-    document.getElementById('todoModal').classList.remove('open');
-    document.getElementById('todoTitle').value = '';
-  }
-
-  function submitTodo() {
-    const title = document.getElementById('todoTitle').value.trim();
-    if (!title) return;
-    const priority = document.getElementById('todoPriority').value;
-    const due = document.getElementById('todoDue').value;
-    addTodo(title, priority, due);
-    todos = JSON.parse(localStorage.getItem('dc_todos') || '[]');
-    closeModal();
-    render();
-  }
-
-  function render() {
-    const c = document.getElementById('todoList');
-    todos = JSON.parse(localStorage.getItem('dc_todos') || '[]');
-    if (!todos.length) { c.innerHTML = '<p class="empty">No quests yet, brave Tarnished...</p>'; return; }
-    c.innerHTML = todos.map(t => `
-      <div class="list-item ${t.completed ? 'completed' : ''}">
+      function render() {
+        const c = document.getElementById("todoList");
+        todos = JSON.parse(localStorage.getItem("dc_todos") || "[]");
+        if (!todos.length) {
+          c.innerHTML =
+            '<p class="empty">No quests yet, brave Tarnished...</p>';
+          return;
+        }
+        c.innerHTML = todos
+          .map(
+            (t) => `
+      <div class="list-item ${t.completed ? "completed" : ""}">
         <span class="title">${t.title}</span>
         <div class="todo-actions">
           <span class="status priority-${t.priority}">${t.priority}</span>
-          <button class="action-btn" onclick="toggle(${t.id})" title="${t.completed ? 'Undo' : 'Complete'}">
-            <i class="fas ${t.completed ? 'fa-rotate-left' : 'fa-check'}"></i>
+          <button class="action-btn" onclick="toggle(${t.id})" title="${t.completed ? "Undo" : "Complete"}">
+            <i class="fas ${t.completed ? "fa-rotate-left" : "fa-check"}"></i>
           </button>
           <button class="action-btn delete" onclick="remove(${t.id})"><i class="fas fa-trash"></i></button>
         </div>
-      </div>`).join('');
-  }
+      </div>`,
+          )
+          .join("");
+      }
 
-  function toggle(id) { toggleTodo(id); render(); }
-  function remove(id) { deleteTodo(id); render(); }
+      function toggle(id) {
+        toggleTodo(id);
+        render();
+      }
+      function remove(id) {
+        deleteTodo(id);
+        render();
+      }
 
-  document.addEventListener('DOMContentLoaded', render);
-  document.getElementById('todoModal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
-</script>
-</body>
+      document.addEventListener("DOMContentLoaded", render);
+      document
+        .getElementById("todoModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeModal();
+        });
+      window.toggeleMenu = function () {
+        document.querySelector(".navbar").classList.toggle("opne");
+      };
+    </script>
+  </body>
 </html>
