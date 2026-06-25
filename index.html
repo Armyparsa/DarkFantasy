@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dark Chronicle — Armyparsa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Hero specific */
+    .hero-bg {
+      background-image: url('https://images.pexels.com/photos/1624496/pexels-photo-1624496.jpeg?auto=compress&cs=tinysrgb&w=1920');
+    }
+
+    /* Recent grid */
+    .recent-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    /* About section */
+    .about-section {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: linear-gradient(180deg, transparent, var(--gold), transparent);
+    }
+
+    .about-title {
+      font-family: var(--font-title);
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 1rem;
+    }
+
+    .about-name {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+      letter-spacing: 3px;
+    }
+
+    .about-bio {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--light-dim);
+      line-height: 1.8;
+      max-width: 500px;
+    }
+
+    .about-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-title);
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ash);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.45rem 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .about-link:hover {
+      color: var(--gold);
+      border-color: var(--gold-dim);
+    }
+
+    .about-crest {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      border-left: 1px solid var(--border);
+      padding-left: 3rem;
+    }
+
+    .crest-ring {
+      width: 100px; height: 100px;
+      border: 1px solid var(--gold-dim);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+
+    .crest-ring::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+    }
+
+    .crest-ring i {
+      font-size: 2.2rem;
+      color: var(--gold);
+    }
+
+    .crest-label {
+      font-family: var(--font-title);
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      text-align: center;
+    }
+
+    /* Footer about */
+    .footer-about {
+      background: rgba(201,168,76,0.04);
+      border-top: 1px solid var(--border);
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+
+    .footer-about p {
+      font-family: var(--font-title);
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--mist);
+    }
+
+    @media (max-width: 768px) {
+      .recent-grid { grid-template-columns: 1fr; }
+      .about-card { grid-template-columns: 1fr; gap: 1.5rem; }
+      .about-crest { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 1.5rem; flex-direction: row; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="particles-canvas"></canvas>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-content">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fas fa-skull"></i></div>
+      Dark Chronicle
+    </a>
+    <nav class="navbar">
+      <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
+      <a href="todo.html"><i class="fas fa-list-check"></i> Todo</a>
+      <a href="habits.html"><i class="fas fa-fire"></i> Habits</a>
+      <a href="budget.html"><i class="fas fa-coins"></i> Budget</a>
+      <a href="diary.html"><i class="fas fa-scroll"></i> Diary</a>
+      <a href="books.html"><i class="fas fa-book"></i> Books</a>
+      <a href="developer.html"><i class="fas fa-code"></i> Dev</a>
+    </nav>
+    <div class="hamburger" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Dark Chronicle</div>
+    <h1>Welcome, Tarnished</h1>
+    <p>Your journey through code and shadow begins here.</p>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section">
+  <div class="section-title">Chronicle Overview</div>
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-list-check"></i></div>
+      <h3>Quests</h3>
+      <span class="stat-number" id="todoCount">0</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-fire"></i></div>
+      <h3>Flames</h3>
+      <span class="stat-number" id="habitCount">0</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-coins"></i></div>
+      <h3>Runes</h3>
+      <span class="stat-number" id="budgetCount">0</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-scroll"></i></div>
+      <h3>Scrolls</h3>
+      <span class="stat-number" id="diaryCount">0</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-book"></i></div>
+      <h3>Tomes</h3>
+      <span class="stat-number" id="bookCount">0</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-code"></i></div>
+      <h3>Projects</h3>
+      <span class="stat-number" id="projectCount">0</span>
+    </div>
+  </div>
+</section>
+
+<!-- RECENT -->
+<section class="section" style="padding-top:0">
+  <div class="section-title">Recent Activity</div>
+  <div class="recent-grid">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-icon"><i class="fas fa-scroll"></i></div>
+        <h2>Latest Scrolls</h2>
+      </div>
+      <div class="card-body" id="recentDiary">
+        <p class="empty">No scrolls written yet...</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-icon"><i class="fas fa-list-check"></i></div>
+        <h2>Active Quests</h2>
+      </div>
+      <div class="card-body" id="recentTodo">
+        <p class="empty">No quests yet, brave Tarnished...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT (Personal Footer Section) -->
+<section class="about-section">
+  <div class="section-title">The Tarnished Behind the Chronicle</div>
+  <div class="about-card">
+    <div class="about-info">
+      <div class="about-title">Profile</div>
+      <div class="about-name">Armyparsa</div>
+      <p class="about-bio">
+        A developer walking the path between code and shadow. Builder of dark chronicles,
+        seeker of the Elden Ring, and architect of digital worlds. Every line of code is
+        a step further into the Lands Between.
+      </p>
+      <div class="about-links">
+        <a href="https://github.com/Armyparsa" target="_blank" class="about-link">
+          <i class="fab fa-github"></i> Armyparsa
+        </a>
+        <a href="mailto:parsaslam244@gmail.com" class="about-link">
+          <i class="fas fa-envelope"></i> parsaslam244@gmail.com
+        </a>
+      </div>
+    </div>
+    <div class="about-crest">
+      <div class="crest-ring"><i class="fas fa-skull"></i></div>
+      <div class="crest-label">Tarnished<br>Developer</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-name">Dark Chronicle</div>
+      <div class="footer-brand-tagline">Forged in shadow, built in code</div>
+    </div>
+    <div class="footer-center">
+      <i class="fas fa-skull"></i>
+    </div>
+    <div class="footer-links">
+      <a href="todo.html"><i class="fas fa-list-check"></i> Todo</a>
+      <a href="habits.html"><i class="fas fa-fire"></i> Habits</a>
+      <a href="budget.html"><i class="fas fa-coins"></i> Budget</a>
+      <a href="diary.html"><i class="fas fa-scroll"></i> Diary</a>
+      <a href="books.html"><i class="fas fa-book"></i> Books</a>
+      <a href="developer.html"><i class="fas fa-code"></i> Developer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>Dark Chronicle &copy; 2025 — Armyparsa</p>
+    <p>Forged in the Lands Between</p>
+  </div>
+</footer>
+
+<script src="js/todo.js"></script>
+<script src="js/habits.js"></script>
+<script src="js/budget.js"></script>
+<script src="js/diary.js"></script>
+<script src="js/books.js"></script>
+<script src="js/developer.js"></script>
+<script src="js/shared.js"></script>
+<script>
+  function loadStats() {
+    loadTodos(); loadHabits(); loadTransactions(); loadDiary(); loadBooks(); loadProjects();
+
+    document.getElementById('todoCount').textContent = todos.length;
+    document.getElementById('habitCount').textContent = habits.length;
+    document.getElementById('budgetCount').textContent = transaction.length;
+    document.getElementById('diaryCount').textContent = diaries.length;
+    document.getElementById('bookCount').textContent = books.length;
+    document.getElementById('projectCount').textContent = projects.length;
+
+    // Recent diary
+    const rd = document.getElementById('recentDiary');
+    const recent = [...diaries].reverse().slice(0,3);
+    rd.innerHTML = recent.length ? recent.map(d => `
+      <div class="list-item">
+        <span class="title">${d.title}</span>
+        <span class="status">${d.date}</span>
+      </div>`).join('') : '<p class="empty">No scrolls written yet...</p>';
+
+    // Recent todos
+    const rt = document.getElementById('recentTodo');
+    const active = todos.filter(t => !t.completed).slice(0,3);
+    rt.innerHTML = active.length ? active.map(t => `
+      <div class="list-item">
+        <span class="title">${t.title}</span>
+        <span class="status">${t.priority}</span>
+      </div>`).join('') : '<p class="empty">No active quests...</p>';
+  }
+
+  document.addEventListener('DOMContentLoaded', loadStats);
+</script>
+</body>
+</html>
